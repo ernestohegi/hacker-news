@@ -2,15 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1024px;
-  padding: 1rem 2rem;
   flex-direction: column;
+  padding: 1rem 0;
 }
 
 .title {
@@ -18,4 +11,8 @@
 }
 
 .button {
+  background: pink;
+  padding: 1rem;
+  color: black;
+  font-weight: 700;
 }

@@ -2,8 +2,9 @@ import { useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import HackerNewsList from "../components/HackerNewsList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
-const LIMIT_PER_PAGE = 100;
+const OFFSET = 3;
 
 type HomeProps = {
   data: HackerNewsSet;
@@ -11,10 +12,37 @@ type HomeProps = {
 
 type HackerNewsSet = number[];
 
-export default function Home({ data }: HomeProps) {
-  const [newsIds, setNewsIds] = useState(data);
+const fetchNews = async (offset: number) => {
+  const res = await fetch(
+    `https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty&limitToFirst=${offset}&orderBy="$key"`
+  );
 
-  const handleLoadMore = () => console.log("click");
+  const data = await res.json();
+
+  return data;
+};
+
+export default function Home({ data = [] }: HomeProps) {
+  const [newsIds, setNewsIds] = useState(data);
+  const [offset, setOffset] = useState(OFFSET);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLoadMore = async () => {
+    const newOffset = offset + OFFSET;
+
+    setIsLoading(true);
+
+    const data = await fetchNews(newOffset);
+
+    setOffset(newOffset);
+
+    setIsLoading(false);
+
+    setNewsIds([
+      ...newsIds,
+      ...data.filter((newsId: number) => !newsIds.includes(newsId)),
+    ]);
+  };
 
   return (
     <main className={styles.main}>
@@ -23,28 +51,23 @@ export default function Home({ data }: HomeProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className={styles.container}>
-        <h1 className={styles.title}> HackerNews List </h1>
+      <h1 className={styles.title}> HackerNews List </h1>
 
-        <HackerNewsList newsIds={newsIds} />
+      <HackerNewsList newsIds={newsIds} />
 
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <button className={styles.button} onClick={handleLoadMore}>
-          {" "}
-          Load more...{" "}
+          Load more
         </button>
-      </section>
+      )}
     </main>
   );
 }
 
-// This gets called on every request
 export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(
-    `https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty&limitToFirst=${LIMIT_PER_PAGE}&orderBy="$key"`
-  );
-  const data = await res.json();
+  const data = await fetchNews(OFFSET);
 
-  // Pass data to the page via props
   return { props: { data } };
 }

@@ -1,18 +1,13 @@
 import { FC } from "react";
-import styles from "./HackerNewsList.module.css";
 
 import HackerNewsCard from "../HackerNewsCard";
 
-const HackerNewsList: FC<{ newsIds: number[] }> = ({ newsIds }) => {
-  return (
-    <section className={styles.container}>
-      {newsIds.map((newsId) => (
-        <article className={styles.article} key={newsId}>
-          <HackerNewsCard newsId={newsId} />
-        </article>
-      ))}
-    </section>
-  );
-};
+const HackerNewsList: FC<{ newsIds: number[] }> = ({ newsIds }) => (
+  <section>
+    {newsIds.map((newsId) => (
+      <HackerNewsCard key={newsId} newsId={newsId} />
+    ))}
+  </section>
+);
 
 export default HackerNewsList;

@@ -20,18 +20,22 @@ const HackerNewsCard: FC<HackerNewsCardProps> = ({ newsId }) => {
 
   if (isLoading) return <div> Loading... </div>;
 
-  const { title, url, by } = data;
+  const { title, url, by } = data || {};
 
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      className={styles.hackerNewsCard}
-    >
-      <p>{title}</p>
-      <p>by {by}</p>
-    </a>
+    title &&
+    url &&
+    by && (
+      <a
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        className={styles.hackerNewsCard}
+      >
+        <p>{title}</p>
+        <p>by {by}</p>
+      </a>
+    )
   );
 };
 
