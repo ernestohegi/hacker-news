@@ -1,0 +1,6 @@
+.hackerNewsCard {
+  border: 1px solid pink;
+  margin-bottom: 1rem;
+  padding: 1rem 2rem;
+  flex: 1;
+}
