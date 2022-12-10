@@ -17,7 +17,7 @@ export default function Home({ data }: HomeProps) {
   const handleLoadMore = () => console.log("click");
 
   return (
-    <main>
+    <main className={styles.main}>
       <Head>
         <title>Hacker News</title>
         <link rel="icon" href="/favicon.ico" />

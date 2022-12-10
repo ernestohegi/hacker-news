@@ -1,9 +1,15 @@
-.container {
+.main {
   display: flex;
-  max-width: 1024px;
-  padding: 1rem 2rem;
   justify-content: center;
   align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1024px;
+  padding: 1rem 2rem;
   flex-direction: column;
 }
 
